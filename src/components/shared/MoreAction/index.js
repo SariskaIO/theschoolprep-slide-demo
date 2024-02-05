@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AlbumIcon from "@material-ui/icons/Album";
 //import PublicIcon from "@material-ui/icons/Public";
 import FlipToFrontIcon from "@material-ui/icons/FlipToFront";
+import SlideshowIcon from '@material-ui/icons/Slideshow';
 import DescriptionIcon from "@material-ui/icons/Description";
 import SettingsIcon from "@material-ui/icons/Settings";
 import CreateIcon from "@material-ui/icons/Create";
@@ -21,6 +22,7 @@ import CloseIcon from "@material-ui/icons/Close";
 // import ViewListIcon from "@material-ui/icons/ViewList";
 // import ViewComfyIcon from "@material-ui/icons/ViewComfy";
 import {
+  GOOGLE_SLIDE,
   //DROPBOX_APP_KEY,
   PRESENTATION,
   SHARED_DOCUMENT,
@@ -468,6 +470,7 @@ export default function MoreAction({
 
   const startWhiteboard = () => {
     stopSharedDocument();
+    stopGoogleSlide();
     setLayoutAndFeature(PRESENTATION, WHITEBOARD, {
       key: "whiteboard",
       value: true,
@@ -482,6 +485,7 @@ export default function MoreAction({
 
   const startSharedDocument = () => {
     stopWhiteboard();
+    stopGoogleSlide();
     setLayoutAndFeature(PRESENTATION, SHARED_DOCUMENT, {
       key: "sharedDocument",
       value: true,
@@ -492,6 +496,21 @@ export default function MoreAction({
   const stopSharedDocument = () => {
     setLayoutAndFeature(SPEAKER, null, { key: "sharedDocument", value: false });
     conference.setLocalParticipantProperty("sharedDocument", "stop");
+  };
+
+  const startGoogleSlide = () => {
+    stopSharedDocument();
+    stopWhiteboard();
+    setLayoutAndFeature(PRESENTATION, GOOGLE_SLIDE, {
+      key: "googleSlide",
+      value: true,
+    });
+    conference.setLocalParticipantProperty("googleSlide", "start");
+  };
+
+  const stopGoogleSlide = () => {
+    setLayoutAndFeature(SPEAKER, null, { key: "googleSlide", value: false });
+    conference.setLocalParticipantProperty("googleSlide", "stop");
   };
 
   const virtualBackgroundList = (anchor) => (
@@ -595,6 +614,19 @@ export default function MoreAction({
       onClick: featureStates.sharedDocument
         ? stopSharedDocument
         : startSharedDocument,
+    },
+    {
+      icon: (
+        <SlideshowIcon
+          className={
+            featureStates.googleSlide
+              ? classes.stopRecording
+              : classes.startRecording
+          }
+        />
+      ),
+      title: featureStates.googleSlide ? "Stop Google Slide" : "Start Google Slide",
+      onClick: featureStates.googleSlide ? stopGoogleSlide : startGoogleSlide,
     },
     {
       icon: <SettingsIcon style={{ color: color.white }} />,

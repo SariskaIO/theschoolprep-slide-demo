@@ -46,6 +46,7 @@ import {
   GET_PRESENTATION_STATUS,
   RECEIVED_PRESENTATION_STATUS,
   streamingMode,
+  GOOGLE_SLIDE,
 } from "../../../constants";
 import {
   setFullScreen,
@@ -754,6 +755,8 @@ const ActionButtons = ({ dominantSpeakerId }) => {
             ? "whiteboard"
             : featureStates.sharedDocument
             ? "sharedDocument"
+            : featureStates.googleSlide
+            ? "googleSlide"
             : "none",
         });
       }
@@ -765,6 +768,7 @@ const ActionButtons = ({ dominantSpeakerId }) => {
             value: true,
           });
           action({ key: "sharedDocument", value: false });
+          action({ key: "googleSlide", value: false });
         }
 
         if (payload.status === "sharedDocument") {
@@ -773,6 +777,16 @@ const ActionButtons = ({ dominantSpeakerId }) => {
             value: true,
           });
           action({ key: "whiteboard", value: false });
+          action({ key: "googleSlide", value: false });
+        }
+
+        if (payload.status === "googleSlide") {
+          setLayoutAndFeature(PRESENTATION, GOOGLE_SLIDE, {
+            key: "googleSlide",
+            value: true,
+          });
+          action({ key: "whiteboard", value: false });
+          action({ key: "sharedDocument", value: false });
         }
       }
     };
@@ -815,6 +829,13 @@ const ActionButtons = ({ dominantSpeakerId }) => {
           value: true,
         });
       }
+
+      if (item._properties?.googleSlide === "start") {
+        setLayoutAndFeature(PRESENTATION, GOOGLE_SLIDE, {
+          key: "googleSlide",
+          value: true,
+        });
+      }
     });
 
     conference.addEventListener(
@@ -844,6 +865,20 @@ const ActionButtons = ({ dominantSpeakerId }) => {
         if (key === "sharedDocument" && newValue === "start") {
           setLayoutAndFeature(PRESENTATION, SHARED_DOCUMENT, {
             key: "sharedDocument",
+            value: true,
+          });
+        }
+
+        if (key === "googleSlide" && newValue === "stop") {
+          setLayoutAndFeature(SPEAKER, null, {
+            key: "googleSlide",
+            value: false,
+          });
+        }
+
+        if (key === "googleSlide" && newValue === "start") {
+          setLayoutAndFeature(PRESENTATION, GOOGLE_SLIDE, {
+            key: "googleSlide",
             value: true,
           });
         }

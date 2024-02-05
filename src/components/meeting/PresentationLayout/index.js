@@ -8,6 +8,7 @@ import {useWindowResize} from "../../../hooks/useWindowResize";
 import classnames from "classnames";
 import * as Constants from "../../../constants";
 import { useDocumentSize } from '../../../hooks/useDocumentSize';
+import GoogleSlide from '../../shared/GoogleSlide';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -61,6 +62,12 @@ const PresentationLayout = ({dominantSpeakerId}) => {
             />
             <Whiteboard
                 isVisible={layout.presentationType === Constants.WHITEBOARD}
+                conference={conference}
+                width={viewportWidth - 48}
+                height={viewportHeight}
+            />
+            <GoogleSlide
+                isVisible={layout.presentationType === Constants.GOOGLE_SLIDE}
                 conference={conference}
                 width={viewportWidth - 48}
                 height={viewportHeight}

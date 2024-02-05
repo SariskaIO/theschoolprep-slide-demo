@@ -41,6 +41,7 @@ export const SPEAKER = "SPEAKER";
 export const SET_PRESENTATION_TYPE = "SET_PRESENTATION_TYPE";
 export const SHARED_DOCUMENT = "SHARED_DOCUMENT";
 export const WHITEBOARD = "WHITEBOARD";
+export const GOOGLE_SLIDE = "GOOGLE_SLIDE";
 
 export const images = [
     {
