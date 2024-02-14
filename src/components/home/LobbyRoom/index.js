@@ -296,7 +296,7 @@ const LobbyRoom = ({ tracks }) => {
         dispatch(addConnection(connection));
         createConference(connection);
         let dc = connection.createDataChannel('myDataChannel');
-        console.log('first connection', connection, dc);
+       // console.log('first connection', connection, dc);
       }
     );
 

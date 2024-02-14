@@ -1,5 +1,5 @@
 import {Box, makeStyles} from '@material-ui/core';
-import React from 'react'
+import React, { useState } from 'react'
 import PartcipantPane from "../../shared/ParticipantPane";
 import SharedDocument from '../../shared/SharedDocument';
 import Whiteboard from '../../shared/Whiteboard';
@@ -31,13 +31,14 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const PresentationLayout = ({dominantSpeakerId}) => {
+const PresentationLayout = ({dominantSpeakerId, presentationRef}) => {
     const classes = useStyles();
     const layout = useSelector(state=>state.layout);
     const conference = useSelector(state => state.conference);
     const totalParticipantGrid = conference?.getParticipantCount()+layout.presenterParticipantIds.length;
     const {viewportWidth, viewportHeight} = useWindowResize(totalParticipantGrid);
     const {documentWidth, documentHeight} = useDocumentSize();
+    const [canvasCtx, setCanvasCtx] = useState(null);
 
     const localTracks = useSelector(state => state.localTrack);
     const remoteTracks = useSelector(state => state.remoteTrack);
@@ -53,7 +54,7 @@ const PresentationLayout = ({dominantSpeakerId}) => {
     });
 
     return (
-        <Box  className={activeClasses}>
+        <Box className={activeClasses} ref={presentationRef}>
             <SharedDocument
                 isVisible={layout.presentationType === Constants.SHARED_DOCUMENT}
                 conference={conference}
@@ -71,7 +72,7 @@ const PresentationLayout = ({dominantSpeakerId}) => {
                 conference={conference}
                 width={viewportWidth - 48}
                 height={viewportHeight}
-            />
+            /> 
             <PartcipantPane 
                 isPresenter={true}
                 panelHeight = {layout.mode === Constants.ENTER_FULL_SCREEN_MODE ? documentHeight - 108 :documentHeight - 88}

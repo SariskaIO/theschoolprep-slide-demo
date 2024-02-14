@@ -499,6 +499,7 @@ export default function MoreAction({
   };
 
   const startGoogleSlide = () => {
+    if(!conference?.isModerator()) {return;}
     stopSharedDocument();
     stopWhiteboard();
     setLayoutAndFeature(PRESENTATION, GOOGLE_SLIDE, {
@@ -509,6 +510,7 @@ export default function MoreAction({
   };
 
   const stopGoogleSlide = () => {
+    if(!conference?.isModerator()) {return;}
     setLayoutAndFeature(SPEAKER, null, { key: "googleSlide", value: false });
     conference.setLocalParticipantProperty("googleSlide", "stop");
   };

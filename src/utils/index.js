@@ -635,3 +635,27 @@ export function formatBytes(bytes) {
 export const getParticipants = (conference, localUser) => {
     return [...conference.getParticipantsWithoutHidden(), { _identity: { user: localUser }, _id: localUser.id }]
 }
+
+export function transform(frame, controller) {
+    let newFrame;
+  newFrame = new window.VideoFrame(frame, {visibleRect: {
+    x: 0,
+    width: frame.codedWidth / 2,
+    y: 0,
+    height : frame.codedHeight / 2,
+  }});
+controller.enqueue(newFrame);
+frame.close();
+}
+
+export async function processTrack(track, presentation) {
+    const generator = new window.MediaStreamTrackGenerator({kind: 'video'});
+   // console.log('first', generator)
+    //presentation.srcObject = new MediaStream([generator]);
+    const processor = new window.MediaStreamTrackProcessor({track});
+    let readable = processor.readable.pipeThrough(new TransformStream({
+      transform,
+    }))
+  //  console.log('readv', readable);
+ //   .pipeTo(generator.writable);
+  }

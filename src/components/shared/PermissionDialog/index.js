@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
         right: 0,
         margin: "0 auto",
         padding: "50px",
+        zIndex: '10',
         "& > div" : {
            padding: "20px"
         },
