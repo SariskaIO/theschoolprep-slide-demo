@@ -659,3 +659,30 @@ export async function processTrack(track, presentation) {
   //  console.log('readv', readable);
  //   .pipeTo(generator.writable);
   }
+
+  export const getTotalParticipants =(conference) => {
+    if(!conference){
+        return null;
+    }else{
+    const localUser = conference.getLocalUser();
+        return [...conference.getParticipantsWithoutHidden(), { _identity: { user: localUser }, _id: localUser.id }];
+    }
+  }
+
+  export const getModerator = (conference) => {
+    if(!conference){
+        return null;
+    }
+    let totalParticipants = getTotalParticipants(conference);
+    if(totalParticipants){
+        totalParticipants?.forEach(participant => {
+            if(participant?._role ==='moderator') {
+                return participant;
+            }else{
+                return null;
+            }
+        })
+    }else{
+        return null;
+    }
+  }

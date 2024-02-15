@@ -14,7 +14,7 @@ const GoogleSlide = ({ conference, height, width, isVisible }) => {
             lineColor = {'#000'} 
             lineWidth = {3} 
             zIndex = {2}
-        />
+        >
             <Box id="googleSlide" frameBorder="0"  style={{background: "#ffffff", display: isVisible ? "block": "none", zIndex: 1}} height={height - 10} width={width} src={src}>
                 <ReactGoogleSlides
                     width={width}
@@ -26,6 +26,7 @@ const GoogleSlide = ({ conference, height, width, isVisible }) => {
                     loop
                 />
             </Box>
+        </SariskaCollaborativeAnnotation>
         </Box>
     );
 };

@@ -41,7 +41,7 @@ import SariskaMediaTransport from "sariska-media-transport/dist/esm/SariskaMedia
 import SettingsBox from "../../meeting/Settings";
 import classnames from "classnames";
 import DrawerBox from "../DrawerBox";
-import { isMobileOrTab, startStreamingInSRSMode, stopStreamingInSRSMode } from "../../../utils";
+import { exitFullscreen, isFullscreen, isMobileOrTab, requestFullscreen, startStreamingInSRSMode, stopStreamingInSRSMode } from "../../../utils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -507,12 +507,16 @@ export default function MoreAction({
       value: true,
     });
     conference.setLocalParticipantProperty("googleSlide", "start");
+    requestFullscreen();
   };
 
   const stopGoogleSlide = () => {
     if(!conference?.isModerator()) {return;}
     setLayoutAndFeature(SPEAKER, null, { key: "googleSlide", value: false });
     conference.setLocalParticipantProperty("googleSlide", "stop");
+    if (isFullscreen()) {
+      exitFullscreen();
+    }
   };
 
   const virtualBackgroundList = (anchor) => (

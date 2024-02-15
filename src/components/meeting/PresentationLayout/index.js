@@ -67,20 +67,21 @@ const PresentationLayout = ({dominantSpeakerId, presentationRef}) => {
                 width={viewportWidth - 48}
                 height={viewportHeight}
             />
-            <GoogleSlide
+           { conference.getLocalParticipantProperty("googleSlide") ?
+           <GoogleSlide
                 isVisible={layout.presentationType === Constants.GOOGLE_SLIDE}
                 conference={conference}
                 width={viewportWidth - 48}
                 height={viewportHeight}
-            /> 
-            <PartcipantPane 
+            /> :null }
+            { !conference.getLocalParticipantProperty("googleSlide") ? <PartcipantPane 
                 isPresenter={true}
                 panelHeight = {layout.mode === Constants.ENTER_FULL_SCREEN_MODE ? documentHeight - 108 :documentHeight - 88}
                 gridItemWidth = {218}    
                 gridItemHeight= {123} 
                 dominantSpeakerId={dominantSpeakerId} 
                 localTracks={localTracks} 
-                remoteTracks={remoteTracks}/>
+                remoteTracks={remoteTracks}/> : null }
         </Box>
     )
 }
